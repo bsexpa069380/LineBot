@@ -9,6 +9,14 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 import re
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+cred = credentials.Certificate("serviceAccountKey.json")
+
+firebase_admin.initialize_app(cred)
+db= firestore.client()
+
 app = Flask(__name__)
 
 # 必須放上自己的Channel Access Token
@@ -74,9 +82,14 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, flex_message)
     if re.match('連結',message):
         text_message = TextSendMessage(text="連結 : https://cruelshare.com/")
+        
         line_bot_api.reply_message(event.reply_token, text_message)
     if re.match('emoji',message):
         text_message = TextSendMessage(text='$ $ LINE emoji $', emojis=emoji)
+        line_bot_api.reply_message(event.reply_token, text_message)
+    if re.match('老師', message):
+        db.collection("Teacher").add({'Name':"Jojo", "Number": "054654879", 'Subject':"asdf"})
+        text_message = "老師新增"
         line_bot_api.reply_message(event.reply_token, text_message)
     
     """
