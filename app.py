@@ -88,8 +88,8 @@ def handle_message(event):
         text_message = TextSendMessage(text='$ $ LINE emoji $', emojis=emoji)
         line_bot_api.reply_message(event.reply_token, text_message)
     if re.match('老師', message):
-        db.collection("Teacher").add({'Name':"Jojo", "Number": "054654879", 'Subject':"asdf"})
-        text_message = "老師新增"
+        db.collection("Teacher").add({'Name':"Kevin", "Number": "0000000000", 'Subject':"all"})
+        text_message = TextSendMessage(text="老師新增", emojis=emoji)
         line_bot_api.reply_message(event.reply_token, text_message)
     
     """
