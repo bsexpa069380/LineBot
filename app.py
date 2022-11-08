@@ -82,14 +82,57 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, flex_message)
     if re.match('連結',message):
         text_message = TextSendMessage(text="連結 : https://cruelshare.com/")
-        
         line_bot_api.reply_message(event.reply_token, text_message)
     if re.match('emoji',message):
         text_message = TextSendMessage(text='$ $ LINE emoji $', emojis=emoji)
         line_bot_api.reply_message(event.reply_token, text_message)
     if re.match('老師', message):
-        db.collection("Teacher").add({'Name':"Kevin", "Number": "0000000000", 'Subject':"all"})
-        text_message = TextSendMessage(text="老師新增", emojis=emoji)
+        # db.collection("Teacher").add({'Name':"Kevin", "Number": "0000000000", 'Subject':"all"})
+        Teachers = db.collection("Teacher").get()
+        teacherList = []
+        for teacher in Teachers:
+            teacherList.append(teacher.to_dict())
+    
+        carousel_template_message = TemplateSendMessage(
+             alt_text='免費教學影片',
+             template=CarouselTemplate(
+                 columns=[
+                     CarouselColumn(
+                         thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
+                         title=teacherList[0]['Name'],
+                         text=teacherList[0]['Subject'],
+                         actions=[
+                             MessageAction(
+                                 label='預約試教',
+                                 text='拆解步驟詳細介紹安裝並使用Anaconda、Python、Spyder、VScode…'
+                             )
+                         ]
+                     ),
+                     CarouselColumn(
+                         thumbnail_image_url='https://i.imgur.com/W7nI6fg.jpg',
+                         title=teacherList[1]['Name'],
+                         text=teacherList[1]['Subject'],
+                         actions=[
+                             MessageAction(
+                                 label='預約試教',
+                                 text='Line Bot申請與串接'
+                             )
+                         ]
+                     ),
+                     CarouselColumn(
+                         thumbnail_image_url='https://i.imgur.com/l7rzfIK.jpg',
+                         title=teacherList[2]['Name'],
+                         text=teacherList[2]['Subject'],
+                         actions=[
+                             MessageAction(
+                                 label='預約試教',
+                                 text='Telegrame申請與串接'
+                             )
+                         ]
+                     )
+                 ]
+             )
+         )
         line_bot_api.reply_message(event.reply_token, text_message)
     
     """
