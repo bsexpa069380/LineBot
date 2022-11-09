@@ -96,20 +96,8 @@ def handle_message(event):
              alt_text='免費教學影片',
              template=CarouselTemplate(
                  columns=[
-                    CarouselColumn(
-                         thumbnail_image_url=teacher["Picture"],
-                         title=teacher['Name'],
-                         text="Subject : " +teacher['Subject'],
-                         actions=[
-                             MessageAction(
-                                 label='預約試教',
-                                 text='Still in progress'
-                             )
-                         ]
-                     )
-                    
-                    for teacher in teacherList
-                        
+                    CarouselColumn(thumbnail_image_url=teacher["Picture"],title=teacher['Name'],text="Subject : " +teacher['Subject'][0],actions=[MessageAction(label='預約試教',text='Still in progress')])
+                    for teacher in teacherList    
                  ]
              )
          )
