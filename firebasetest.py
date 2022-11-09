@@ -21,5 +21,7 @@ for teacher in Teachers:
     print(teacher)
     for sub in teacher["Subject"]:
         SubjectSet.add(sub)
-for subject in SubjectSet:
-    print(subject)
+
+Sublist = [subject for subject in SubjectSet]
+
+print(Sublist)
