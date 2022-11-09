@@ -128,27 +128,29 @@ def handle_message(event):
     if re.search("^I am Looking For a.*Teacher$", message):
         x = message.split()
         Teachers = db.collection("Teacher").where('Subject', 'array_contains', x[5]).get()
-        teacherColumn = []
-        for teacher in Teachers:
-            teacher = teacher.to_dict()
-            teacherColumn.append(CarouselColumn(
-                         thumbnail_image_url=teacher['Picture'],
-                         title=teacher['Name'],
-                         text=teacher['Subject'][0],
-                         actions=[
-                             MessageAction(
-                                 label='預約試教',
-                                 text='Still in progress'
-                             ),
-                             URIAction(
-                                 label='老師資歷',
-                                 uri='Still in progress'
-                             )]))
+        # teacherColumn = []
+        # for teacher in Teachers:
+        #     teacher = teacher.to_dict()
+        #     teacherColumn.append(CarouselColumn(
+        #                  thumbnail_image_url=teacher['Picture'],
+        #                  title=teacher['Name'],
+        #                  text=teacher['Subject'][0],
+        #                  actions=[
+        #                      MessageAction(
+        #                          label='預約試教',
+        #                          text='Still in progress'
+        #                      ),
+        #                      URIAction(
+        #                          label='老師資歷',
+        #                          uri='Still in progress'
+        #                      )]))
 
-        carousel_template_message = TemplateSendMessage(
-                alt_text='免費教學影片',
-                template=CarouselTemplate(columns=teacherColumn))
-        line_bot_api.reply_message(event.reply_token, carousel_template_message)
+        # carousel_template_message = TemplateSendMessage(
+        #         alt_text='免費教學影片',
+        #         template=CarouselTemplate(columns=teacherColumn))
+        # line_bot_api.reply_message(event.reply_token, carousel_template_message)
+        text_message = TextSendMessage(text='Let me help you')
+        line_bot_api.reply_message(event.reply_token, text_message)
 
     """
     else:
