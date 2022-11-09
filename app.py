@@ -100,7 +100,7 @@ def handle_message(event):
                      CarouselColumn(
                          thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
                          title=teacherList[0]['Name'],
-                         text=teacherList[0]['Subject'],
+                         text="Subject : " + teacherList[0]['Subject'],
                          actions=[
                              MessageAction(
                                  label='預約試教',
@@ -134,7 +134,20 @@ def handle_message(event):
              )
          )
         line_bot_api.reply_message(event.reply_token, carousel_template_message)
-    
+    if re.match("我要找老師",message):
+        Teachers = db.collection("Teacher").get()
+        SubjectSet =set()
+        for teacher in Teachers:
+            teacher.to_dict()
+            for sub in teacher["Subject"]:
+                SubjectSet.add(sub)
+
+
+        flex_message = TextSendMessage(text='請選擇你想加強的科目',
+        quick_reply=QuickReply(items=[
+            for subject in SubjectSet:
+                QuickReplyButton(action=MessageAction(label=subject, text="I am Looking For a {sub} Teacher".format(sub=subject))),
+
     """
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
