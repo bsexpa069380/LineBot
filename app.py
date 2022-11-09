@@ -144,9 +144,12 @@ def handle_message(event):
 
 
         flex_message = TextSendMessage(text='請選擇你想加強的科目',
-        quick_reply=QuickReply(items=[
-            for subject in SubjectSet:
-                QuickReplyButton(action=MessageAction(label=subject, text="I am Looking For a {sub} Teacher".format(sub=subject))),
+            quick_reply=QuickReply(items=[
+                for subject in SubjectSet:
+                    QuickReplyButton(action=MessageAction(label=subject, text="I am Looking For a {sub} Teacher".format(sub=subject)))
+            ])
+        )
+        line_bot_api.reply_message(event.reply_token, flex_message)
 
     """
     else:
