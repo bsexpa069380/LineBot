@@ -91,16 +91,18 @@ def handle_message(event):
         teacherList = []
         for teacher in Teachers:
             teacherList.append(teacher.to_dict())
-    
-        carousel_template_message = TemplateSendMessage(
-             alt_text='免費教學影片',
-             template=CarouselTemplate(
-                 columns=[
-                    CarouselColumn(thumbnail_image_url=teacher["Picture"],title=teacher['Name'],text="Subject : " +teacher['Subject'][0],actions=[MessageAction(label='預約試教',text='Still in progress')])
-                    for teacher in teacherList    
-                 ]
-             )
-         )
+        try :
+            carousel_template_message = TemplateSendMessage(
+                alt_text='免費教學影片',
+                template=CarouselTemplate(
+                    columns=[
+                        CarouselColumn(thumbnail_image_url=teacher["Picture"],title=teacher['Name'],text="Subject : " +teacher['Subject'][0],actions=[MessageAction(label='預約試教',text='Still in progress')])
+                        for teacher in teacherList    
+                    ]
+                )
+            )
+        except:
+            carousel_template_message = "Something went Wrong..... We will fix it later."
         line_bot_api.reply_message(event.reply_token, carousel_template_message)
 
     # Line QuckReply for Subject selection, Get subjects from existing teachers
