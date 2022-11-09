@@ -86,33 +86,35 @@ def handle_message(event):
     if re.match('emoji',message):
         text_message = TextSendMessage(text='$ $ LINE emoji $', emojis=emoji)
         line_bot_api.reply_message(event.reply_token, text_message)
-    # if re.match('老師列表 ', message):
-    #     # db.collection("Teacher").add({'Name':"Kevin", "Number": "0000000000", 'Subject':"all"})
-    #     Teachers = db.collection("Teacher").get()
-    #     teacherList = []
-    #     for teacher in Teachers:
-    #         teacherList.append(teacher.to_dict())
+    if re.match('老師列表 ', message):
+        Teachers = db.collection("Teacher").get()
+        teacherList = []
+        for teacher in Teachers:
+            teacherList.append(teacher.to_dict())
     
-    #     carousel_template_message = TemplateSendMessage(
-    #          alt_text='免費教學影片',
-    #          template=CarouselTemplate(
-    #              columns=[
-    #                 for teacher in teacherList:
-    #                     CarouselColumn(
-    #                      thumbnail_image_url=teacher["Picture"],
-    #                      title=teacher['Name'],
-    #                      text="Subject : " + for sub in teacher['Subject'],
-    #                      actions=[
-    #                          MessageAction(
-    #                              label='預約試教',
-    #                              text='Still in progress'
-    #                          )
-    #                      ]
-    #                  )
-    #              ]
-    #          )
-    #      )
-    #     line_bot_api.reply_message(event.reply_token, carousel_template_message)
+        carousel_template_message = TemplateSendMessage(
+             alt_text='免費教學影片',
+             template=CarouselTemplate(
+                 columns=[
+                    CarouselColumn(
+                         thumbnail_image_url=teacher["Picture"],
+                         title=teacher['Name'],
+                         text="Subject : " +teacher['Subject'],
+                         actions=[
+                             MessageAction(
+                                 label='預約試教',
+                                 text='Still in progress'
+                             )
+                         ]
+                     )
+                    
+                    for teacher in teacherList
+                        
+                 ]
+             )
+         )
+        line_bot_api.reply_message(event.reply_token, carousel_template_message)
+
     # Line QuckReply for Subject selection, Get subjects from existing teachers
     if re.match("我要找老師",message):
         Teachers = db.collection("Teacher").get()
