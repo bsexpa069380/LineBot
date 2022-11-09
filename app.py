@@ -97,9 +97,9 @@ def handle_message(event):
                 template=CarouselTemplate(
                     columns=[
                         CarouselColumn(
-                         thumbnail_image_url=teacher["Picture"],
-                         title=teacher["Name"],
-                         text=teacher["Subject"][0],
+                         thumbnail_image_url=teacher['Picture'],
+                         title=teacher['Name'],
+                         text=teacher['Subject'][0],
                          actions=[
                              MessageAction(
                                  label='預約試教',
