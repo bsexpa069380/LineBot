@@ -88,15 +88,10 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, text_message)
     if re.match('老師列表 ', message):
         Teachers = db.collection("Teacher").get()
-        teacherList = []
+        teacherColumn = []
         for teacher in Teachers:
-            teacherList.append(teacher.to_dict())
-        try :
-            carousel_template_message = TemplateSendMessage(
-                alt_text='免費教學影片',
-                template=CarouselTemplate(
-                    columns=[
-                        CarouselColumn(
+            teacher = teacher.to_dict()
+            teacherColumn.append(CarouselColumn(
                          thumbnail_image_url=teacher['Picture'],
                          title=teacher['Name'],
                          text=teacher['Subject'][0],
@@ -108,14 +103,11 @@ def handle_message(event):
                              URIAction(
                                  label='老師資歷',
                                  uri='Still in progress'
-                             )
-                         ]
-                     ) for teacher in teacherList
-                    ]
-                )
-            )
-        except:
-            carousel_template_message = "Something went Wrong..... We will fix it later."
+                             )]))
+
+        carousel_template_message = TemplateSendMessage(
+                alt_text='免費教學影片',
+                template=CarouselTemplate(columns=teacherColumn))
         line_bot_api.reply_message(event.reply_token, carousel_template_message)
 
     # Line QuckReply for Subject selection, Get subjects from existing teachers
@@ -136,61 +128,26 @@ def handle_message(event):
     if re.search("^I am Looking For a.*Teacher$", message):
         x = message.split()
         Teachers = db.collection("Teacher").where('Subject', 'array_contains', x[5]).get()
-        teacherList = []
+        teacherColumn = []
         for teacher in Teachers:
-            teacherList.append(teacher.to_dict())
+            teacher = teacher.to_dict()
+            teacherColumn.append(CarouselColumn(
+                         thumbnail_image_url=teacher['Picture'],
+                         title=teacher['Name'],
+                         text=teacher['Subject'][0],
+                         actions=[
+                             MessageAction(
+                                 label='預約試教',
+                                 text='Still in progress'
+                             ),
+                             URIAction(
+                                 label='老師資歷',
+                                 uri='Still in progress'
+                             )]))
+
         carousel_template_message = TemplateSendMessage(
                 alt_text='免費教學影片',
-                template=CarouselTemplate(
-                    columns=[
-                        CarouselColumn(
-                         thumbnail_image_url=teacherList[0]['Picture'],
-                         title=teacherList[0]['Name'],
-                         text=teacherList[0]['Subject'][0],
-                         actions=[
-                             MessageAction(
-                                 label='預約試教',
-                                 text='Still in progress'
-                             ),
-                             URIAction(
-                                 label='老師資歷',
-                                 uri='Still in progress'
-                             )
-                         ]
-                     ), 
-                     CarouselColumn(
-                         thumbnail_image_url=teacherList[1]['Picture'],
-                         title=teacherList[1]['Name'],
-                         text=teacherList[1]['Subject'][0],
-                         actions=[
-                             MessageAction(
-                                 label='預約試教',
-                                 text='Still in progress'
-                             ),
-                             URIAction(
-                                 label='老師資歷',
-                                 uri='Still in progress'
-                             )
-                         ]
-                     ),
-                     CarouselColumn(
-                         thumbnail_image_url=teacherList[2]['Picture'],
-                         title=teacherList[2]['Name'],
-                         text=teacherList[2]['Subject'][0],
-                         actions=[
-                             MessageAction(
-                                 label='預約試教',
-                                 text='Still in progress'
-                             ),
-                             URIAction(
-                                 label='老師資歷',
-                                 uri='Still in progress'
-                             )
-                         ]
-                     )
-                    ]
-                )
-            )
+                template=CarouselTemplate(columns=teacherColumn))
         line_bot_api.reply_message(event.reply_token, carousel_template_message)
 
     """
