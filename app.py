@@ -97,36 +97,15 @@ def handle_message(event):
              alt_text='免費教學影片',
              template=CarouselTemplate(
                  columns=[
-                     CarouselColumn(
-                         thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
-                         title=teacherList[0]['Name'],
-                         text="Subject : " + teacherList[0]['Subject'],
+                    for teacher in teacherList:
+                        CarouselColumn(
+                         thumbnail_image_url=teacher["Picture"],
+                         title=teacher['Name'],
+                         text="Subject : " + for sub in teacher['Subject'],
                          actions=[
                              MessageAction(
                                  label='預約試教',
-                                 text='拆解步驟詳細介紹安裝並使用Anaconda、Python、Spyder、VScode…'
-                             )
-                         ]
-                     ),
-                     CarouselColumn(
-                         thumbnail_image_url='https://i.imgur.com/W7nI6fg.jpg',
-                         title=teacherList[1]['Name'],
-                         text=teacherList[1]['Subject'],
-                         actions=[
-                             MessageAction(
-                                 label='預約試教',
-                                 text='Line Bot申請與串接'
-                             )
-                         ]
-                     ),
-                     CarouselColumn(
-                         thumbnail_image_url='https://i.imgur.com/l7rzfIK.jpg',
-                         title=teacherList[2]['Name'],
-                         text=teacherList[2]['Subject'],
-                         actions=[
-                             MessageAction(
-                                 label='預約試教',
-                                 text='Telegrame申請與串接'
+                                 text='Still in progress'
                              )
                          ]
                      )
@@ -134,6 +113,7 @@ def handle_message(event):
              )
          )
         line_bot_api.reply_message(event.reply_token, carousel_template_message)
+    # Line QuckReply for Subject selection, Get subjects from existing teachers
     if re.match("我要找老師",message):
         Teachers = db.collection("Teacher").get()
         SubjectSet =set()
