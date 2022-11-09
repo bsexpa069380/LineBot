@@ -133,6 +133,65 @@ def handle_message(event):
             ])
         )
         line_bot_api.reply_message(event.reply_token, flex_message)
+    if re.search("^I am Looking For a.*Teacher$", message):
+        x = message.split()
+        Teachers = db.collection("Teacher").where('Subject', 'array_contains', x[5]).get()
+        teacherList = []
+        for teacher in Teachers:
+            teacherList.append(teacher.to_dict())
+        carousel_template_message = TemplateSendMessage(
+                alt_text='免費教學影片',
+                template=CarouselTemplate(
+                    columns=[
+                        CarouselColumn(
+                         thumbnail_image_url=teacherList[0]['Picture'],
+                         title=teacherList[0]['Name'],
+                         text=teacherList[0]['Subject'][0],
+                         actions=[
+                             MessageAction(
+                                 label='預約試教',
+                                 text='Still in progress'
+                             ),
+                             URIAction(
+                                 label='老師資歷',
+                                 uri='Still in progress'
+                             )
+                         ]
+                     ), 
+                     CarouselColumn(
+                         thumbnail_image_url=teacherList[1]['Picture'],
+                         title=teacherList[1]['Name'],
+                         text=teacherList[1]['Subject'][0],
+                         actions=[
+                             MessageAction(
+                                 label='預約試教',
+                                 text='Still in progress'
+                             ),
+                             URIAction(
+                                 label='老師資歷',
+                                 uri='Still in progress'
+                             )
+                         ]
+                     ),
+                     CarouselColumn(
+                         thumbnail_image_url=teacherList[2]['Picture'],
+                         title=teacherList[2]['Name'],
+                         text=teacherList[2]['Subject'][0],
+                         actions=[
+                             MessageAction(
+                                 label='預約試教',
+                                 text='Still in progress'
+                             ),
+                             URIAction(
+                                 label='老師資歷',
+                                 uri='Still in progress'
+                             )
+                         ]
+                     )
+                    ]
+                )
+            )
+        line_bot_api.reply_message(event.reply_token, carousel_template_message)
 
     """
     else:
