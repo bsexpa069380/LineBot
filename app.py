@@ -138,7 +138,7 @@ def handle_message(event):
         Teachers = db.collection("Teacher").get()
         SubjectSet =set()
         for teacher in Teachers:
-            teacher.to_dict()
+            teacher = teacher.to_dict()
             for sub in teacher["Subject"]:
                 SubjectSet.add(sub)
 
