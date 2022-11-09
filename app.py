@@ -86,12 +86,12 @@ def handle_message(event):
     if re.match('emoji',message):
         text_message = TextSendMessage(text='$ $ LINE emoji $', emojis=emoji)
         line_bot_api.reply_message(event.reply_token, text_message)
-    if re.match('老師列表 ', message):
+    if re.match('老師列表', message):
         Teachers = db.collection("Teacher").get()
         teacherColumn = []
         for teacher in Teachers:
             teacher = teacher.to_dict()
-            teacherColumn.append(CarouselColumn(
+            teacherColumn.append(CarouselColumn (
                          thumbnail_image_url=teacher['Picture'],
                          title=teacher['Name'],
                          text=teacher['Subject'][0],
